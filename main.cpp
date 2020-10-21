@@ -1,6 +1,8 @@
-#include <iostream>
+#include "CSV Managing/Reader.h"
+
+using namespace std;
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
-}
+    Reader* reader = new Reader();
+    reader->Read("raw_tracks-edited.csv");
+};
