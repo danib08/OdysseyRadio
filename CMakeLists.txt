@@ -9,5 +9,5 @@ find_package(Qt5 COMPONENTS Core Widgets Gui Multimedia REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 
-add_executable(OdysseyRadio main.cpp "CSV Managing/Reader.cpp" "CSV Managing/Reader.h" Interface/main.cpp Interface/widget.cpp Interface/widget.h Interface/widget.ui)
+add_executable(OdysseyRadio main.cpp "CSV Managing/Reader.cpp" "CSV Managing/Reader.h" Interface/mainMP3.cpp Interface/widget.cpp Interface/widget.h Interface/widget.ui)
 target_link_libraries(OdysseyRadio Qt5::Widgets Qt5::Core Qt5::Gui Qt5::Multimedia) 
