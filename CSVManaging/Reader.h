@@ -6,13 +6,22 @@
 #define ODYSSEYRADIO_READER_H
 
 #include <iostream>
-#include <vector>
+#include <Lists/LinkedList.h>
 
 class Reader {
+private:
+    int pagination;
+    int last_row;
+    std::string file_name;
+    bool first_read = true;
+    LinkedList* page_now;
+    LinkedList* page_before;
+    LinkedList* page_after;
+    bool scroll_down;
 
 public:
     Reader();
-    std::string Read(std::string file_name);
+    void Read();
 };
 
 
