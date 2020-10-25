@@ -5,25 +5,93 @@
 #include "Reader.h"
 #include <string>
 #include <fstream>
-#include <sstream>
 
 using namespace std;
 
-Reader::Reader() = default;
+Reader::Reader() : pagination(20) {
+    page_now = new LinkedList();
+    page_before = new LinkedList();
+    page_after = new LinkedList();
+};
 
-string Reader::Read(string file_name) {
+void Reader::Read() {
     ifstream file;
     file.open("../Metadata/" + file_name);
-    int counter = 0;
+    int line_counter = 1;
+    int column_counter = 1;
+    string one;
+    string two;
+    string three;
+    string four;
+    string five;
+    string six;
+    string seven;
 
-    while (file.good()) {
-        if (counter == 2) {
-            break;
+    if (last_row % pagination == 0) {
+        if (scroll_down) {
+            page_before = page_now;
+            page_now = page_after;
+            page_after->clear();
+            //TODO display new page_now page
         }
-        string line;
-        getline(file, line, ',');
-        cout << line << endl;
-        counter++;
+        else {
+            page_after = page_now;
+            page_now = page_before;
+            page_before->clear();
+            //TODO display new page_now page
+        }
+
+        while (file.good()) {
+            if (scroll_down && line_counter == last_row + 41) {
+                break;
+            }
+            if (!scroll_down && line_counter == last_row - 39) {
+                break;
+            }
+            string line;
+            getline(file, line, ',');
+
+            if (scroll_down && line_counter < last_row + 41 && line_counter > last_row + 20) {
+                switch (column_counter) {
+                    case 1:
+                        one = line;
+                    case 2:
+                        two = line;
+                    case 3:
+                        three = line;
+                    case 4:
+                        four = line;
+                    case 5:
+                        five = line;
+                    case 6:
+                        six = seven;
+                        page_now->append(one, three, three, four, five, six, seven);
+                }
+            }
+            if (!scroll_down && line_counter <= last_row - 40 && line_counter > last_row - 60) {
+                switch (column_counter) {
+                    case 1:
+                        one = line;
+                    case 2:
+                        two = line;
+                    case 3:
+                        three = line;
+                    case 4:
+                        four = line;
+                    case 5:
+                        five = line;
+                    case 6:
+                        six = seven;
+                        page_now->append(one, three, three, four, five, six, seven);
+                }
+            }
+
+            column_counter++;
+            if (column_counter % 7 == 0) {
+                column_counter = 1;
+                line_counter++;
+            }
+        }
     }
-    return string();
+
 }
