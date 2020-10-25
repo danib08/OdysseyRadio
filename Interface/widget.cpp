@@ -2,6 +2,7 @@
 #include "ui_widget.h"
 #include <QMediaPlayer>
 #include <QFileDialog>
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -15,6 +16,30 @@ Widget::Widget(QWidget *parent)
     connect(mMediaPlayer,&QMediaPlayer::durationChanged,[&](qint64 duration){
         ui->progress->setMaximum(duration);
     });
+
+    ui->songsLIst->addItem("a");
+    ui->songsLIst->addItem("b");
+    ui->songsLIst->addItem("c");
+    ui->songsLIst->addItem("d");
+    ui->songsLIst->addItem("e");
+    ui->songsLIst->addItem("f");
+    ui->songsLIst->addItem("g");
+    ui->songsLIst->addItem("h");
+    ui->songsLIst->addItem("i");
+    ui->songsLIst->addItem("j");
+    ui->songsLIst->addItem("k");
+    ui->songsLIst->addItem("l");
+    ui->songsLIst->addItem("m");
+    ui->songsLIst->addItem("n");
+    ui->songsLIst->addItem("o");
+    ui->songsLIst->addItem("p");
+    ui->songsLIst->addItem("q");
+    ui->songsLIst->addItem("r");
+    ui->songsLIst->addItem("s");
+    ui->songsLIst->addItem("t");
+    ui->songsLIst->addItem("u");
+    ui->songsLIst->addItem("v");
+
 }
 
 Widget::~Widget()
@@ -32,7 +57,6 @@ void Widget::on_openB_clicked()
     mMediaPlayer->setMedia(QUrl::fromLocalFile(filename));
     mMediaPlayer->setVolume(ui->volumeBar->value());
     on_playB_clicked();
-
 }
 
 void Widget::on_playB_clicked()
@@ -65,4 +89,14 @@ void Widget::on_muteB_clicked()
 void Widget::on_volumeBar_valueChanged(int value)
 {
     mMediaPlayer->setVolume(value);
+}
+
+void Widget::on_songsLIst_doubleClicked(const QModelIndex &index)
+{
+
+}
+
+void Widget::on_artistList_doubleClicked(const QModelIndex &index)
+{
+
 }

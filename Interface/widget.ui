@@ -78,26 +78,6 @@
     <string>OPEN</string>
    </property>
   </widget>
-  <widget class="QListView" name="infoList">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>111</width>
-     <height>301</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QListView" name="songsList">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>50</y>
-     <width>601</width>
-     <height>271</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
@@ -120,7 +100,7 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>560</x>
@@ -146,7 +126,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -171,6 +151,26 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QListWidget" name="songsLIst">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>50</y>
+     <width>581</width>
+     <height>271</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="artistList">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>121</width>
+     <height>301</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <tabstops>

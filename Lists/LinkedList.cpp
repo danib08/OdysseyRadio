@@ -11,7 +11,7 @@ LinkedList::LinkedList()
 
 void LinkedList::append(string one, string two, string three, string four, string five, string six, string seven) {
     Node* node = new Node();
-    node.s
+    node->setArray(one, two, three, four, five, six, seven);
 
     if (length == 0) {
         head = node;

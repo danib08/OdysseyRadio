@@ -12,7 +12,7 @@ Reader::Reader() : pagination(20) {
     page_now = new LinkedList();
     page_before = new LinkedList();
     page_after = new LinkedList();
-};
+}
 
 void Reader::Read() {
     ifstream file;
@@ -32,13 +32,11 @@ void Reader::Read() {
             page_before = page_now;
             page_now = page_after;
             page_after->clear();
-            //TODO display new page_now page
         }
         else {
             page_after = page_now;
             page_now = page_before;
             page_before->clear();
-            //TODO display new page_now page
         }
 
         while (file.good()) {
@@ -64,8 +62,10 @@ void Reader::Read() {
                     case 5:
                         five = line;
                     case 6:
-                        six = seven;
-                        page_now->append(one, three, three, four, five, six, seven);
+                        six = line;
+                    case 7:
+                        seven = line;
+                        page_now->append(one, two, three, four, five, six, seven);
                 }
             }
             if (!scroll_down && line_counter <= last_row - 40 && line_counter > last_row - 60) {
@@ -81,10 +81,13 @@ void Reader::Read() {
                     case 5:
                         five = line;
                     case 6:
-                        six = seven;
-                        page_now->append(one, three, three, four, five, six, seven);
+                        six = line;
+                    case 7:
+                        seven = line;
+                        page_now->append(one, two, three, four, five, six, seven);
                 }
             }
+            //TODO display new page_now page
 
             column_counter++;
             if (column_counter % 7 == 0) {
@@ -93,5 +96,4 @@ void Reader::Read() {
             }
         }
     }
-
 }

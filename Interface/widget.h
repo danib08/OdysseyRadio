@@ -29,6 +29,10 @@ private slots:
 
     void on_volumeBar_valueChanged(int value);
 
+    void on_songsLIst_doubleClicked(const QModelIndex &index);
+
+    void on_artistList_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::Widget *ui;
     QMediaPlayer *mMediaPlayer;

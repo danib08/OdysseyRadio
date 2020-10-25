@@ -2,7 +2,7 @@
 
 #include <QApplication>
 
-int play(int argc, char **argv)
+int play(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setStyle("fusion");

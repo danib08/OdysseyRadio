@@ -12,7 +12,7 @@ class Reader {
 private:
     int pagination;
     int last_row;
-    std::string file_name;
+    std::string file_name = "raw_tracks-edited.csv";
     bool first_read = true;
     LinkedList* page_now;
     LinkedList* page_before;

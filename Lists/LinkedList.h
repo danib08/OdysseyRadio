@@ -6,7 +6,7 @@
 #define PRUEBAQT_LINKEDLIST_H
 
 #include "Node.h"
-#include_next <string>
+#include <string>
 using namespace std;
 
 class Node; // This forward declaration is used because without it, the program doesn't compile. This way, the
