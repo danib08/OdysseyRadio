@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <CSVManaging/Reader.h>
+#include <QtWidgets/QListWidgetItem>
 
 
 QT_BEGIN_NAMESPACE
@@ -20,8 +21,6 @@ public:
     void showSongs();
 
 private slots:
-    void on_openB_clicked();
-
     void on_playB_clicked();
 
     void on_pauseB_clicked();
@@ -35,6 +34,8 @@ private slots:
     void on_songsLIst_doubleClicked(const QModelIndex &index);
 
     void on_artistList_doubleClicked(const QModelIndex &index);
+
+    void playSong();
 
 private:
     Ui::Widget *ui;

@@ -22,23 +22,13 @@ Widget::Widget(QWidget *parent)
     connect(mMediaPlayer,&QMediaPlayer::durationChanged,[&](qint64 duration){
         ui->progress->setMaximum(duration);
     });
+
+    connect(ui->songsLIst, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(playSong()));
 }
 
 Widget::~Widget()
 {
     delete ui;
-}
-
-
-void Widget::on_openB_clicked()
-{
-    QString filename = QFileDialog::getOpenFileName(this,"Open");
-    if (filename.isEmpty()){
-        return;
-    }
-    mMediaPlayer->setMedia(QUrl::fromLocalFile(filename));
-    mMediaPlayer->setVolume(ui->volumeBar->value());
-    on_playB_clicked();
 }
 
 void Widget::on_playB_clicked()
@@ -81,6 +71,17 @@ void Widget::on_songsLIst_doubleClicked(const QModelIndex &index)
 void Widget::on_artistList_doubleClicked(const QModelIndex &index)
 {
 
+}
+
+void Widget::playSong() {
+    QString filename = "/home/dani/Documents/fma_small/";
+    QString text = ui->songsLIst->selectedItems()[0]->text();
+
+    string hola = text.toStdString();
+    cout << hola << "\n";
+    mMediaPlayer->setMedia(QUrl::fromLocalFile(filename));
+    mMediaPlayer->setVolume(ui->volumeBar->value());
+    on_playB_clicked();
 }
 
 void Widget::showSongs() {
