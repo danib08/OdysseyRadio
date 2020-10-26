@@ -32,9 +32,11 @@ public:
      * @brief Adds a new node at the back of the linked list with the value entered as a parameter.
      * @param data The value that the new node will contain.
      */
-    void append(string one, string two, string three, string four, string five, string six, string seven);
+    void append(string one, string two, string three);
 
     void clear();
+
+    std::string get();
 
 };
 

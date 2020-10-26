@@ -9,9 +9,9 @@ using namespace std;
 LinkedList::LinkedList()
         : head(nullptr), tail(nullptr) {}
 
-void LinkedList::append(string one, string two, string three, string four, string five, string six, string seven) {
+void LinkedList::append(string one, string two, string three) {
     Node* node = new Node();
-    node->setArray(one, two, three, four, five, six, seven);
+    node->setArray(one, two, three);
 
     if (length == 0) {
         head = node;
@@ -26,4 +26,17 @@ void LinkedList::append(string one, string two, string three, string four, strin
 
 void LinkedList::clear() {
     head = tail = nullptr;
+}
+
+string LinkedList::get() {
+    Node* node = head;
+    string output;
+    for (int j = 0; j < length; ++j) {
+        output += node->getIndexArray(0) + " - " + node->getIndexArray(1) + " - " + node->getIndexArray(2);
+        if (j != length - 1) {
+            output += "$";
+        }
+        node = node->getNext();
+    }
+    return output;
 }

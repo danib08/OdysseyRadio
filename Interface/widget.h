@@ -2,6 +2,8 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <CSVManaging/Reader.h>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -15,6 +17,7 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+    void showSongs();
 
 private slots:
     void on_openB_clicked();
@@ -36,5 +39,6 @@ private slots:
 private:
     Ui::Widget *ui;
     QMediaPlayer *mMediaPlayer;
+    Reader* reader;
 };
 #endif // WIDGET_H

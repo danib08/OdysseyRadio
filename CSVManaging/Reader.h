@@ -8,12 +8,12 @@
 #include <iostream>
 #include <Lists/LinkedList.h>
 
+
 class Reader {
 private:
     int pagination;
     int last_row;
     std::string file_name = "raw_tracks-edited.csv";
-    bool first_read = true;
     LinkedList* page_now;
     LinkedList* page_before;
     LinkedList* page_after;
@@ -22,6 +22,10 @@ private:
 public:
     Reader();
     void Read();
+    void firstRead();
+    std::string getNowPage();
+    std::string getAfterPage();
+    void splitLine(std::string line, bool flag);
 };
 
 

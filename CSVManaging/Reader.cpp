@@ -5,6 +5,7 @@
 #include "Reader.h"
 #include <string>
 #include <fstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -65,7 +66,7 @@ void Reader::Read() {
                         six = line;
                     case 7:
                         seven = line;
-                        page_now->append(one, two, three, four, five, six, seven);
+                        page_now->append(one, two, three);
                 }
             }
             if (!scroll_down && line_counter <= last_row - 40 && line_counter > last_row - 60) {
@@ -84,10 +85,9 @@ void Reader::Read() {
                         six = line;
                     case 7:
                         seven = line;
-                        page_now->append(one, two, three, four, five, six, seven);
+                        page_now->append(one, two, three);
                 }
             }
-            //TODO display new page_now page
 
             column_counter++;
             if (column_counter % 7 == 0) {
@@ -96,4 +96,64 @@ void Reader::Read() {
             }
         }
     }
+}
+
+void Reader::firstRead() {
+    ifstream file;
+    file.open("../Metadata/" + file_name);
+    int line_counter = 1;
+
+    while (file.good()) {
+        if (line_counter == 41) {
+            break;
+        }
+
+        string line;
+        getline(file, line, '\n');
+
+        if (line_counter < 21) {
+            splitLine(line, true);
+        }
+        else {
+            splitLine(line, false);
+        }
+
+        line_counter++;
+    }
+}
+
+std::string Reader::getNowPage() {
+    return page_now->get();
+}
+
+void Reader::splitLine(string line, bool flag) {
+    string one;
+    string two;
+    string three;
+    int counter = 1;
+
+    stringstream check1(line);
+    string intermediate;
+
+    while(getline(check1, intermediate, ',')) {
+        switch (counter) {
+            case 1:
+                one = intermediate;
+            case 2:
+                two = intermediate;
+            case 3:
+                three = intermediate;
+        }
+        counter++;
+    }
+    if (flag) {
+        page_now->append(one, two, three);
+    }
+    else {
+        page_after->append(one, two, three);
+    }
+}
+
+std::string Reader::getAfterPage() {
+    return page_after->get();
 }

@@ -2,6 +2,9 @@
 #include "ui_widget.h"
 #include <QMediaPlayer>
 #include <QFileDialog>
+#include <sstream>
+#include "CSVManaging/Reader.h"
+using namespace std;
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -9,6 +12,9 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
     mMediaPlayer = new QMediaPlayer(this);
+    reader = new Reader();
+    reader->firstRead();
+    showSongs();
 
     connect(mMediaPlayer,&QMediaPlayer::positionChanged,[&](qint64 position){
         ui->progress->setValue(position);
@@ -16,30 +22,6 @@ Widget::Widget(QWidget *parent)
     connect(mMediaPlayer,&QMediaPlayer::durationChanged,[&](qint64 duration){
         ui->progress->setMaximum(duration);
     });
-
-    ui->songsLIst->addItem("a");
-    ui->songsLIst->addItem("b");
-    ui->songsLIst->addItem("c");
-    ui->songsLIst->addItem("d");
-    ui->songsLIst->addItem("e");
-    ui->songsLIst->addItem("f");
-    ui->songsLIst->addItem("g");
-    ui->songsLIst->addItem("h");
-    ui->songsLIst->addItem("i");
-    ui->songsLIst->addItem("j");
-    ui->songsLIst->addItem("k");
-    ui->songsLIst->addItem("l");
-    ui->songsLIst->addItem("m");
-    ui->songsLIst->addItem("n");
-    ui->songsLIst->addItem("o");
-    ui->songsLIst->addItem("p");
-    ui->songsLIst->addItem("q");
-    ui->songsLIst->addItem("r");
-    ui->songsLIst->addItem("s");
-    ui->songsLIst->addItem("t");
-    ui->songsLIst->addItem("u");
-    ui->songsLIst->addItem("v");
-
 }
 
 Widget::~Widget()
@@ -99,4 +81,24 @@ void Widget::on_songsLIst_doubleClicked(const QModelIndex &index)
 void Widget::on_artistList_doubleClicked(const QModelIndex &index)
 {
 
+}
+
+void Widget::showSongs() {
+    string list_of_songs = reader->getNowPage();
+
+    stringstream check1(list_of_songs);
+    string intermediate;
+
+    while(getline(check1, intermediate, '$')) {
+        QString qstr = QString::fromStdString(intermediate);
+        ui->songsLIst->addItem(qstr);
+    }
+
+    list_of_songs = reader->getAfterPage();
+    stringstream check2(list_of_songs);
+
+    while(getline(check2, intermediate, '$')) {
+        QString qstr = QString::fromStdString(intermediate);
+        ui->songsLIst->addItem(qstr);
+    }
 }
