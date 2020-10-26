@@ -13,7 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QListView>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
@@ -30,17 +30,17 @@ public:
     QPushButton *stopB;
     QPushButton *muteB;
     QPushButton *openB;
-    QListView *infoList;
-    QListView *songsList;
     QLabel *label_2;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QProgressBar *memoryBar;
-    QWidget *widget1;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout;
     QProgressBar *progress;
     QSlider *volumeBar;
+    QListWidget *songsLIst;
+    QListWidget *artistList;
 
     void setupUi(QWidget *Widget)
     {
@@ -62,12 +62,6 @@ public:
         openB = new QPushButton(Widget);
         openB->setObjectName(QString::fromUtf8("openB"));
         openB->setGeometry(QRect(20, 20, 89, 25));
-        infoList = new QListView(Widget);
-        infoList->setObjectName(QString::fromUtf8("infoList"));
-        infoList->setGeometry(QRect(10, 50, 111, 301));
-        songsList = new QListView(Widget);
-        songsList->setObjectName(QString::fromUtf8("songsList"));
-        songsList->setGeometry(QRect(130, 50, 601, 271));
         label_2 = new QLabel(Widget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setGeometry(QRect(260, 10, 261, 41));
@@ -76,41 +70,47 @@ public:
         font.setPointSize(32);
         label_2->setFont(font);
         label_2->setAlignment(Qt::AlignCenter);
-        widget = new QWidget(Widget);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(560, 390, 168, 27));
-        horizontalLayout = new QHBoxLayout(widget);
+        layoutWidget = new QWidget(Widget);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(560, 390, 168, 27));
+        horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(widget);
+        label = new QLabel(layoutWidget);
         label->setObjectName(QString::fromUtf8("label"));
 
         horizontalLayout->addWidget(label);
 
-        memoryBar = new QProgressBar(widget);
+        memoryBar = new QProgressBar(layoutWidget);
         memoryBar->setObjectName(QString::fromUtf8("memoryBar"));
         memoryBar->setValue(0);
 
         horizontalLayout->addWidget(memoryBar);
 
-        widget1 = new QWidget(Widget);
-        widget1->setObjectName(QString::fromUtf8("widget1"));
-        widget1->setGeometry(QRect(10, 370, 521, 48));
-        verticalLayout = new QVBoxLayout(widget1);
+        layoutWidget1 = new QWidget(Widget);
+        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(10, 370, 521, 48));
+        verticalLayout = new QVBoxLayout(layoutWidget1);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        progress = new QProgressBar(widget1);
+        progress = new QProgressBar(layoutWidget1);
         progress->setObjectName(QString::fromUtf8("progress"));
         progress->setValue(0);
 
         verticalLayout->addWidget(progress);
 
-        volumeBar = new QSlider(widget1);
+        volumeBar = new QSlider(layoutWidget1);
         volumeBar->setObjectName(QString::fromUtf8("volumeBar"));
         volumeBar->setOrientation(Qt::Horizontal);
 
         verticalLayout->addWidget(volumeBar);
 
+        songsLIst = new QListWidget(Widget);
+        songsLIst->setObjectName(QString::fromUtf8("songsLIst"));
+        songsLIst->setGeometry(QRect(150, 50, 581, 271));
+        artistList = new QListWidget(Widget);
+        artistList->setObjectName(QString::fromUtf8("artistList"));
+        artistList->setGeometry(QRect(10, 50, 121, 301));
         QWidget::setTabOrder(playB, pauseB);
         QWidget::setTabOrder(pauseB, stopB);
         QWidget::setTabOrder(stopB, openB);

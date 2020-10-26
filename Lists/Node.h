@@ -13,7 +13,7 @@ using namespace std;
 */
 class Node {
 private:
-    std::string data[8];
+    std::string data[3];
     Node* next;
 
 public:
@@ -23,11 +23,6 @@ public:
      */
     Node();
 
-    /**
-     * @brief Getter for the "next" attribute.
-     * @return The "next" pointer type attribute.
-     */
-    Node* getNext();
 
     /**
      * @brief Setter for the "next" pointer type attribute.
@@ -35,14 +30,11 @@ public:
      */
     void setNext(Node* new_next);
 
-    /**
-     * Assigns a value to an index of the data array
-     * @param item The string item to be added
-     * @param i The index of interest
-     */
-    void assign(std::string item, int i);
+    Node* getNext();
 
-    void setArray(string one, string two, string three, string four, string five, string six, string seven);
+    void setArray(string one, string two, string three);
+
+    std::string getIndexArray(int i);
 };
 
 

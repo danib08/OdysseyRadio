@@ -7,25 +7,21 @@ using namespace std;
 
 Node::Node() : next(nullptr){}
 
-Node* Node::getNext() {
-    return next;
-}
-
 void Node::setNext(Node* new_next) {
     next = new_next;
 }
 
-void Node::assign(std::string item, int i) {
-    data[i] = item;
-}
-
-void Node::setArray(string one, string two, string three, string four, string five, string six, string seven) {
+void Node::setArray(string one, string two, string three) {
     data[0] = one;
     data[1] = two;
     data[2] = three;
-    data[3] = four;
-    data[4] = five;
-    data[5] = six;
-    data[6] = seven;
+}
+
+Node *Node::getNext() {
+    return next;
+}
+
+std::string Node::getIndexArray(int i) {
+    return data[i];
 }
 

@@ -6,7 +6,7 @@
 #define PRUEBAQT_LINKEDLIST_H
 
 #include "Node.h"
-#include_next <string>
+#include <string>
 using namespace std;
 
 class Node; // This forward declaration is used because without it, the program doesn't compile. This way, the
@@ -32,9 +32,11 @@ public:
      * @brief Adds a new node at the back of the linked list with the value entered as a parameter.
      * @param data The value that the new node will contain.
      */
-    void append(string one, string two, string three, string four, string five, string six, string seven);
+    void append(string one, string two, string three);
 
     void clear();
+
+    std::string get();
 
 };
 

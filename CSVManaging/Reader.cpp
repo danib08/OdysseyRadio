@@ -5,6 +5,7 @@
 #include "Reader.h"
 #include <string>
 #include <fstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ Reader::Reader() : pagination(20) {
     page_now = new LinkedList();
     page_before = new LinkedList();
     page_after = new LinkedList();
-};
+}
 
 void Reader::Read() {
     ifstream file;
@@ -32,13 +33,11 @@ void Reader::Read() {
             page_before = page_now;
             page_now = page_after;
             page_after->clear();
-            //TODO display new page_now page
         }
         else {
             page_after = page_now;
             page_now = page_before;
             page_before->clear();
-            //TODO display new page_now page
         }
 
         while (file.good()) {
@@ -64,8 +63,10 @@ void Reader::Read() {
                     case 5:
                         five = line;
                     case 6:
-                        six = seven;
-                        page_now->append(one, three, three, four, five, six, seven);
+                        six = line;
+                    case 7:
+                        seven = line;
+                        page_now->append(one, two, three);
                 }
             }
             if (!scroll_down && line_counter <= last_row - 40 && line_counter > last_row - 60) {
@@ -81,8 +82,10 @@ void Reader::Read() {
                     case 5:
                         five = line;
                     case 6:
-                        six = seven;
-                        page_now->append(one, three, three, four, five, six, seven);
+                        six = line;
+                    case 7:
+                        seven = line;
+                        page_now->append(one, two, three);
                 }
             }
 
@@ -93,5 +96,64 @@ void Reader::Read() {
             }
         }
     }
+}
 
+void Reader::firstRead() {
+    ifstream file;
+    file.open("../Metadata/" + file_name);
+    int line_counter = 1;
+
+    while (file.good()) {
+        if (line_counter == 41) {
+            break;
+        }
+
+        string line;
+        getline(file, line, '\n');
+
+        if (line_counter < 21) {
+            splitLine(line, true);
+        }
+        else {
+            splitLine(line, false);
+        }
+
+        line_counter++;
+    }
+}
+
+std::string Reader::getNowPage() {
+    return page_now->get();
+}
+
+void Reader::splitLine(string line, bool flag) {
+    string one;
+    string two;
+    string three;
+    int counter = 1;
+
+    stringstream check1(line);
+    string intermediate;
+
+    while(getline(check1, intermediate, ',')) {
+        switch (counter) {
+            case 1:
+                one = intermediate;
+            case 2:
+                two = intermediate;
+            case 3:
+                three = intermediate;
+        }
+        counter++;
+    }
+    if (flag) {
+        page_now->append(one, two, three);
+    }
+    else {
+        page_after->append(one, two, three);
+    }
+}
+
+std::string Reader::getAfterPage() {
+    return page_after->get();
 }

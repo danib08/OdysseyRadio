@@ -1,8 +1,13 @@
 #include "CSVManaging/Reader.h"
+#include "Interface/widget.h"
+#include <QApplication>
 
-using namespace std;
-
-int main() {
-    Reader* reader = new Reader();
-    reader->Read();
+int main(int argc, char **argv)
+{
+    QApplication a(argc, argv);
+    a.setStyle("fusion");
+    Widget w;
+    w.setFixedSize(750, 450);
+    w.show();
+    return a.exec();
 }
