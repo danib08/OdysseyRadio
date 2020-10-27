@@ -18,7 +18,7 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
-    void showSongs();
+    void showSongs(string song_list);
 
 private slots:
     void on_playB_clicked();

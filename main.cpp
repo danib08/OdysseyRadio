@@ -1,4 +1,3 @@
-#include "CSVManaging/Reader.h"
 #include "Interface/widget.h"
 #include <QApplication>
 
