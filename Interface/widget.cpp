@@ -3,6 +3,8 @@
 #include <QMediaPlayer>
 #include <QFileDialog>
 #include <sstream>
+#include <fstream>
+#include <QtWidgets/QMessageBox>
 #include "CSVManaging/Reader.h"
 using namespace std;
 
@@ -74,14 +76,59 @@ void Widget::on_artistList_doubleClicked(const QModelIndex &index)
 }
 
 void Widget::playSong() {
-    QString filename = "/home/dani/Documents/fma_small/";
+    string filename = "/home/dani/Documents/fma_small/";
     QString text = ui->songsLIst->selectedItems()[0]->text();
 
-    string hola = text.toStdString();
-    cout << hola << "\n";
-    mMediaPlayer->setMedia(QUrl::fromLocalFile(filename));
-    mMediaPlayer->setVolume(ui->volumeBar->value());
-    on_playB_clicked();
+    string song_text = text.toStdString();
+
+    stringstream check1(song_text);
+    string id;
+
+    getline(check1, id, ' ');
+
+    string folder;
+    string file;
+
+    switch (id.length()) {
+        case 6:
+            folder = id.substr(0, 3);
+            file = id;
+            break;
+        case 5:
+            folder = id.substr(0, 2);
+            folder = "0" + folder;
+            file = "0" + id;
+            break;
+        case 4:
+            folder = id.substr(0, 1);
+            folder = "00" + folder;
+            file = "00" + id;
+            break;
+        case 3:
+            folder = "000";
+            file = "000" + id;
+            break;
+        case 2:
+            folder = "000";
+            file = "0000" + id;
+            break;
+        default:
+            folder = "000";
+            file = "00000" + id;
+            break;
+    }
+
+    filename += folder + "/" + file + ".mp3";
+    QString qstr = QString::fromStdString(filename);
+
+    try {
+        mMediaPlayer->setMedia(QUrl::fromLocalFile(qstr));
+        mMediaPlayer->setVolume(ui->volumeBar->value());
+        on_playB_clicked();
+    }
+    catch (const std::exception& e) {
+        throw e;
+    }
 }
 
 void Widget::showSongs() {
