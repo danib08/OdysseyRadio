@@ -29,8 +29,23 @@ private slots:
 
     void on_volumeBar_valueChanged(int value);
 
+<<<<<<< Updated upstream
 private:
     Ui::Widget *ui;
     QMediaPlayer *mMediaPlayer;
+=======
+    void on_songsLIst_doubleClicked(const QModelIndex &index);
+
+    void on_artistList_doubleClicked(const QModelIndex &index);
+
+    void playSong();
+
+
+private:
+    Ui::Widget *ui;
+    QMediaPlayer *mMediaPlayer;
+    Reader* reader;
+    QSlider* slider;
+>>>>>>> Stashed changes
 };
 #endif // WIDGET_H
