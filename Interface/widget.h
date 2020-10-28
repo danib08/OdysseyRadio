@@ -2,6 +2,9 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <CSVManaging/Reader.h>
+#include <QtWidgets/QListWidgetItem>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -15,10 +18,9 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+    void showSongs(string song_list);
 
 private slots:
-    void on_openB_clicked();
-
     void on_playB_clicked();
 
     void on_pauseB_clicked();
@@ -29,23 +31,17 @@ private slots:
 
     void on_volumeBar_valueChanged(int value);
 
-<<<<<<< Updated upstream
-private:
-    Ui::Widget *ui;
-    QMediaPlayer *mMediaPlayer;
-=======
-    void on_songsLIst_doubleClicked(const QModelIndex &index);
-
-    void on_artistList_doubleClicked(const QModelIndex &index);
-
-    void playSong();
-
 
 private:
     Ui::Widget *ui;
     QMediaPlayer *mMediaPlayer;
     Reader* reader;
     QSlider* slider;
->>>>>>> Stashed changes
+
+    void on_songsLIst_doubleClicked(const QModelIndex &index);
+
+    void on_artistList_doubleClicked(const QModelIndex &index);
+
+    void playSong();
 };
 #endif // WIDGET_H

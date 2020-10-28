@@ -2,12 +2,22 @@
 #include "ui_widget.h"
 #include <QMediaPlayer>
 #include <QFileDialog>
+#include <sstream>
+#include <fstream>
+#include <QtWidgets/QMessageBox>
+#include "CSVManaging/Reader.h"
+using namespace std;
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
     mMediaPlayer = new QMediaPlayer(this);
+    reader = new Reader();
+    reader->firstRead();
+    showSongs(reader->getNowPage());
+    showSongs(reader->getAfterPage());
 
     connect(mMediaPlayer,&QMediaPlayer::positionChanged,[&](qint64 position){
         ui->progress->setValue(position);
@@ -15,8 +25,6 @@ Widget::Widget(QWidget *parent)
     connect(mMediaPlayer,&QMediaPlayer::durationChanged,[&](qint64 duration){
         ui->progress->setMaximum(duration);
     });
-<<<<<<< Updated upstream
-=======
 
     connect(ui->songsLIst, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(playSong()));
     slider = new QSlider(this);
@@ -25,27 +33,11 @@ Widget::Widget(QWidget *parent)
     connect(mMediaPlayer,&QMediaPlayer::durationChanged,slider,&QSlider::setMaximum);
     connect(mMediaPlayer,&QMediaPlayer::positionChanged,slider,&QSlider::setValue);
     connect(slider,&QSlider::sliderMoved,mMediaPlayer,&QMediaPlayer::setPosition);
-
-
->>>>>>> Stashed changes
 }
 
 Widget::~Widget()
 {
     delete ui;
-}
-
-
-void Widget::on_openB_clicked()
-{
-    QString filename = QFileDialog::getOpenFileName(this,"Open");
-    if (filename.isEmpty()){
-        return;
-    }
-    mMediaPlayer->setMedia(QUrl::fromLocalFile(filename));
-    mMediaPlayer->setVolume(ui->volumeBar->value());
-    on_playB_clicked();
-
 }
 
 void Widget::on_playB_clicked()
@@ -79,8 +71,6 @@ void Widget::on_volumeBar_valueChanged(int value)
 {
     mMediaPlayer->setVolume(value);
 }
-<<<<<<< Updated upstream
-=======
 
 void Widget::on_songsLIst_doubleClicked(const QModelIndex &index)
 {
@@ -93,7 +83,8 @@ void Widget::on_artistList_doubleClicked(const QModelIndex &index)
 }
 
 void Widget::playSong() {
-    string path = "/home/oscarmg310/Documentos/fma_small/";
+    string path = "/home/dani/Documents/fma_small/";
+  
     QString text = ui->songsLIst->selectedItems()[0]->text();
 
     string song_text = text.toStdString();
@@ -170,7 +161,6 @@ void Widget::playSong() {
                                            QMessageBox::Warning, 0, 0, 0);
         box->show();
     }
-
 }
 
 void Widget::showSongs(string song_list) {
@@ -191,6 +181,3 @@ void Widget::showSongs(string song_list) {
 //        ui->songsLIst->addItem(qstr);
 //    }
 }
-
-
->>>>>>> Stashed changes
