@@ -27,6 +27,12 @@ Widget::Widget(QWidget *parent)
     });
 
     connect(ui->songsLIst, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(playSong()));
+    slider = new QSlider(this);
+    slider->setOrientation(Qt::Horizontal);
+    ui->verticalLayout->addWidget(slider);
+    connect(mMediaPlayer,&QMediaPlayer::durationChanged,slider,&QSlider::setMaximum);
+    connect(mMediaPlayer,&QMediaPlayer::positionChanged,slider,&QSlider::setValue);
+    connect(slider,&QSlider::sliderMoved,mMediaPlayer,&QMediaPlayer::setPosition);
 }
 
 Widget::~Widget()
@@ -78,6 +84,7 @@ void Widget::on_artistList_doubleClicked(const QModelIndex &index)
 
 void Widget::playSong() {
     string path = "/home/dani/Documents/fma_small/";
+  
     QString text = ui->songsLIst->selectedItems()[0]->text();
 
     string song_text = text.toStdString();
