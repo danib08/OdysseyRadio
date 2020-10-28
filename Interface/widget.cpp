@@ -1,10 +1,9 @@
 #include "widget.h"
-#include "ui_widget.h"
 #include <QMediaPlayer>
-#include <QFileDialog>
 #include <sstream>
 #include <fstream>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QScrollBar>
 #include "CSVManaging/Reader.h"
 using namespace std;
 
@@ -27,17 +26,16 @@ Widget::Widget(QWidget *parent)
     });
 
     connect(ui->songsLIst, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(playSong()));
+
     slider = new QSlider(this);
     slider->setOrientation(Qt::Horizontal);
     ui->verticalLayout->addWidget(slider);
     connect(mMediaPlayer,&QMediaPlayer::durationChanged,slider,&QSlider::setMaximum);
     connect(mMediaPlayer,&QMediaPlayer::positionChanged,slider,&QSlider::setValue);
     connect(slider,&QSlider::sliderMoved,mMediaPlayer,&QMediaPlayer::setPosition);
-}
 
-Widget::~Widget()
-{
-    delete ui;
+    scroll_bar = ui->songsLIst->verticalScrollBar();
+    connect(scroll_bar, SIGNAL(valueChanged(int)), this, SLOT(detectScroll()));
 }
 
 void Widget::on_playB_clicked()
@@ -70,11 +68,6 @@ void Widget::on_muteB_clicked()
 void Widget::on_volumeBar_valueChanged(int value)
 {
     mMediaPlayer->setVolume(value);
-}
-
-void Widget::on_songsLIst_doubleClicked(const QModelIndex &index)
-{
-
 }
 
 void Widget::on_artistList_doubleClicked(const QModelIndex &index)
@@ -132,11 +125,7 @@ void Widget::playSong() {
     ifstream check;
     check.open("../Metadata/checksums");
 
-    int counter = 0;
     while (check.good()) {
-        if (counter == 3) {
-            break;
-        }
         string line;
         getline(check, line, '\n');
         line = line.substr(42, line.length() - 2);
@@ -145,7 +134,6 @@ void Widget::playSong() {
             file_found = true;
             break;
         }
-        counter ++;
     }
 
     if (file_found) {
@@ -164,7 +152,6 @@ void Widget::playSong() {
 }
 
 void Widget::showSongs(string song_list) {
-//    string list_of_songs = reader->getNowPage();
     stringstream check1(song_list);
     string intermediate;
 
@@ -172,12 +159,42 @@ void Widget::showSongs(string song_list) {
         QString qstr = QString::fromStdString(intermediate);
         ui->songsLIst->addItem(qstr);
     }
+}
 
-//    list_of_songs = reader->getAfterPage();
-//    stringstream check2(list_of_songs);
-//
-//    while(getline(check2, intermediate, '$')) {
-//        QString qstr = QString::fromStdString(intermediate);
-//        ui->songsLIst->addItem(qstr);
-//    }
+void Widget::detectScroll() {
+    if (scroll_bar->value() == scroll_bar->maximum()) {
+        int count = ui->songsLIst->count();
+        string item_text;
+        QListWidgetItem* item;
+        bool search = false;
+
+        if (count == 40 || count == 61 || count == 63 || count == 64 || count == 69 || count == 75 || count == 67) {
+            item = ui->songsLIst->item(count - 1);
+            search = true;
+        }
+        if (count == 62) {
+            item = ui->songsLIst->item(count - 2);
+            search = true;
+        }
+
+        if (search) {
+            item_text = item->text().toStdString();
+
+            stringstream check1(item_text);
+            string id;
+            getline(check1, id, ' ');
+
+            reader->read(id);
+            ui->songsLIst->clear();
+            showSongs(reader->getBeforePage());
+            showSongs(reader->getNowPage());
+            showSongs(reader->getAfterPage());
+            ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
+        }
+    }
+}
+
+Widget::~Widget()
+{
+    delete ui;
 }

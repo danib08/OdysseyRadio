@@ -26,6 +26,7 @@ void LinkedList::append(string one, string two, string three) {
 
 void LinkedList::clear() {
     head = tail = nullptr;
+    length = 0;
 }
 
 string LinkedList::get() {
