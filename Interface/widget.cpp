@@ -1,10 +1,9 @@
 #include "widget.h"
-#include "ui_widget.h"
 #include <QMediaPlayer>
-#include <QFileDialog>
 #include <sstream>
 #include <fstream>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QScrollBar>
 #include "CSVManaging/Reader.h"
 using namespace std;
 
@@ -27,17 +26,16 @@ Widget::Widget(QWidget *parent)
     });
 
     connect(ui->songsLIst, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(playSong()));
+
     slider = new QSlider(this);
     slider->setOrientation(Qt::Horizontal);
     ui->verticalLayout->addWidget(slider);
     connect(mMediaPlayer,&QMediaPlayer::durationChanged,slider,&QSlider::setMaximum);
     connect(mMediaPlayer,&QMediaPlayer::positionChanged,slider,&QSlider::setValue);
     connect(slider,&QSlider::sliderMoved,mMediaPlayer,&QMediaPlayer::setPosition);
-}
 
-Widget::~Widget()
-{
-    delete ui;
+    scroll_bar = ui->songsLIst->verticalScrollBar();
+    connect(scroll_bar, SIGNAL(valueChanged(int)), this, SLOT(detectScroll()));
 }
 
 void Widget::on_playB_clicked()
@@ -70,11 +68,6 @@ void Widget::on_muteB_clicked()
 void Widget::on_volumeBar_valueChanged(int value)
 {
     mMediaPlayer->setVolume(value);
-}
-
-void Widget::on_songsLIst_doubleClicked(const QModelIndex &index)
-{
-
 }
 
 void Widget::on_artistList_doubleClicked(const QModelIndex &index)
@@ -164,7 +157,7 @@ void Widget::playSong() {
 }
 
 void Widget::showSongs(string song_list) {
-//    string list_of_songs = reader->getNowPage();
+
     stringstream check1(song_list);
     string intermediate;
 
@@ -172,12 +165,28 @@ void Widget::showSongs(string song_list) {
         QString qstr = QString::fromStdString(intermediate);
         ui->songsLIst->addItem(qstr);
     }
+}
 
-//    list_of_songs = reader->getAfterPage();
-//    stringstream check2(list_of_songs);
-//
-//    while(getline(check2, intermediate, '$')) {
-//        QString qstr = QString::fromStdString(intermediate);
-//        ui->songsLIst->addItem(qstr);
-//    }
+void Widget::detectScroll() {
+    if (scroll_bar->value() == scroll_bar->maximum()) {
+        int count = ui->songsLIst->count();
+        string item_text;
+        QListWidgetItem* item;
+
+        if (count == 40) {
+            item = ui->songsLIst->item(count - 1);
+        }
+
+        item_text = item->text().toStdString();
+
+        stringstream check1(item_text);
+        string id;
+        getline(check1, id, ' ');
+
+;    }
+}
+
+Widget::~Widget()
+{
+    delete ui;
 }

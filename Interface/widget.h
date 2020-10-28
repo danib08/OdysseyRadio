@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <CSVManaging/Reader.h>
 #include <QtWidgets/QListWidgetItem>
-
+#include "ui_widget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -20,6 +20,15 @@ public:
     ~Widget();
     void showSongs(string song_list);
 
+private:
+    Ui::Widget *ui;
+    QMediaPlayer *mMediaPlayer;
+    Reader* reader;
+    QSlider* slider;
+    QScrollBar* scroll_bar;
+
+    void on_artistList_doubleClicked(const QModelIndex &index);
+
 private slots:
     void on_playB_clicked();
 
@@ -31,17 +40,9 @@ private slots:
 
     void on_volumeBar_valueChanged(int value);
 
-
-private:
-    Ui::Widget *ui;
-    QMediaPlayer *mMediaPlayer;
-    Reader* reader;
-    QSlider* slider;
-
-    void on_songsLIst_doubleClicked(const QModelIndex &index);
-
-    void on_artistList_doubleClicked(const QModelIndex &index);
-
     void playSong();
+
+    void detectScroll();
+
 };
 #endif // WIDGET_H
