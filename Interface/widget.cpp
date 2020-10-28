@@ -5,6 +5,9 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QScrollBar>
 #include "CSVManaging/Reader.h"
+#include <iostream>
+#include <fstream>
+#include <unistd.h>
 using namespace std;
 
 Widget::Widget(QWidget *parent)
@@ -76,7 +79,7 @@ void Widget::on_artistList_doubleClicked(const QModelIndex &index)
 }
 
 void Widget::playSong() {
-    string path = "/home/dani/Documents/fma_small/";
+    string path = "/home/oscarmg310/Documents/fma_small/";
   
     QString text = ui->songsLIst->selectedItems()[0]->text();
 
@@ -158,7 +161,10 @@ void Widget::showSongs(string song_list) {
     while(getline(check1, intermediate, '$')) {
         QString qstr = QString::fromStdString(intermediate);
         ui->songsLIst->addItem(qstr);
+        double vm, rss;
+        setMemoryValue(vm,rss);
     }
+
 }
 
 void Widget::detectScroll() {
@@ -190,6 +196,7 @@ void Widget::detectScroll() {
             showSongs(reader->getNowPage());
             showSongs(reader->getAfterPage());
             ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
+
         }
     }
 }
@@ -197,4 +204,29 @@ void Widget::detectScroll() {
 Widget::~Widget()
 {
     delete ui;
+}
+
+void Widget::setMemoryValue(double& vm_usage, double& resident_set) {
+    vm_usage     = 0.0;
+    resident_set = 0.0;
+
+    // the two fields we want
+    unsigned long vsize;
+    long rss;
+    {
+        std::string ignore;
+        std::ifstream ifs("/proc/self/stat", std::ios_base::in);
+        ifs >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore
+            >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore
+            >> ignore >> ignore >> vsize >> rss;
+    }
+
+    long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
+    vm_usage = vsize / 1024.0;
+    resident_set = rss * page_size_kb;
+
+    int memVal = (800000-resident_set)/100000;
+    ui->memoryBar->setValue(memVal);
+
+
 }

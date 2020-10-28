@@ -19,7 +19,7 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
     void showSongs(string song_list);
-
+    void setMemoryValue(double& vm_usage, double& resident_set);
 private:
     Ui::Widget *ui;
     QMediaPlayer *mMediaPlayer;
