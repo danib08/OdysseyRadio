@@ -8,7 +8,6 @@
 #include <iostream>
 #include <Lists/LinkedList.h>
 
-
 class Reader {
 private:
     int pagination;

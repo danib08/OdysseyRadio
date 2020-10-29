@@ -6,7 +6,6 @@
 #include <QtWidgets/QScrollBar>
 #include "CSVManaging/Reader.h"
 #include <iostream>
-#include <fstream>
 #include <unistd.h>
 using namespace std;
 
@@ -74,7 +73,7 @@ void Widget::on_volumeBar_valueChanged(int value)
 }
 
 void Widget::playSong() {
-    string path = "/home/oscarmg310/Documents/fma_small/";
+    string path = "/home/dani/Documents/fma_small/";
   
     QString text = ui->songsLIst->selectedItems()[0]->text();
 
@@ -163,13 +162,16 @@ void Widget::showSongs(string song_list) {
 }
 
 void Widget::detectScroll() {
+    if (scroll_bar->value() > scroll_bar->minimum() && scroll_bar->value() < scroll_bar->maximum()) {
+        just_changed = false;
+    }
     if (scroll_bar->value() == scroll_bar->maximum() && !just_changed) {
         int count = ui->songsLIst->count();
         string item_text;
         QListWidgetItem* item;
         bool search = false;
 
-        if (count == 40 || count == 61 || count == 63 || count == 64 || count == 69 || count == 75 || count == 67) {
+        if (count == 40 || count == 61 || count == 63 || count == 64 || count == 69 || count == 75 || count == 67 || count == 60) {
             item = ui->songsLIst->item(count - 1);
             search = true;
         }
@@ -186,13 +188,12 @@ void Widget::detectScroll() {
             getline(check1, id, ' ');
 
             reader->readDown(id);
+            just_changed = true;
             ui->songsLIst->clear();
             showSongs(reader->getBeforePage());
             showSongs(reader->getNowPage());
             showSongs(reader->getAfterPage());
-            just_changed = true;
             ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
-
         }
     }
     if (scroll_bar->value() == scroll_bar->minimum() && !just_changed) {
@@ -203,25 +204,18 @@ void Widget::detectScroll() {
 
         if (first_id != "2") {
             reader->readUp(first_id);
+            just_changed = true;
             ui->songsLIst->clear();
             showSongs(reader->getBeforePage());
             showSongs(reader->getNowPage());
             showSongs(reader->getAfterPage());
-            just_changed = true;
+            ui->songsLIst->scrollToItem(ui->songsLIst->item(ui->songsLIst->count() - 1));
         }
     }
-    if (scroll_bar->value() > scroll_bar->minimum() && scroll_bar->value() < scroll_bar->maximum()) {
-        just_changed = false;
-    }
-}
-
-Widget::~Widget()
-{
-    delete ui;
 }
 
 void Widget::setMemoryValue(double& vm_usage, double& resident_set) {
-    vm_usage     = 0.0;
+    vm_usage = 0.0;
     resident_set = 0.0;
 
     // the two fields we want
@@ -239,8 +233,11 @@ void Widget::setMemoryValue(double& vm_usage, double& resident_set) {
     vm_usage = vsize / 1024.0;
     resident_set = rss * page_size_kb;
 
-    int memVal = (800000-resident_set)/100000;
+    int memVal = (resident_set/8000000) * 100;
     ui->memoryBar->setValue(memVal);
+}
 
-
+Widget::~Widget()
+{
+    delete ui;
 }

@@ -84,35 +84,54 @@ void Reader::readUp(string first_id) {
     page_before->clear();
     page_after->clear();
 
-    string string1 = page_before->get();
-    string string2 = page_now->get();
-    string string3 = page_after->get();
-
+    int pos = getPosition(first_id);
     ifstream file;
     file.open("../Metadata/" + file_name);
-    int pos = getPosition(first_id);
     int line_counter = 1;
     bool range_found = false;
 
-    while (file.good()) {
-        string line;
-        getline(file, line, '\n');
-        string id;
+    if (pos > 60) {
+        while (file.good()) {
+            string line;
+            getline(file, line, '\n');
+            string id;
 
-        stringstream check1(line);
-        getline(check1, id, ',');
+            stringstream check1(line);
+            getline(check1, id, ',');
 
-        if (line_counter == 61 && range_found) {
-            string string1 = page_before->get();
-            string string2 = page_now->get();
-            string string3 = page_after->get();
-            break;
+            if (line_counter == 61 && range_found) {
+                break;
+            }
+            if (line_counter == pos - (pagination * 3) && !range_found) {
+                line_counter = 1;
+                range_found = true;
+            }
+            if (range_found) {
+                if (line_counter < pagination + 1) {
+                    splitLine(line, 2);
+                }
+                if (line_counter >= pagination + 1 && line_counter <= 2 * pagination) {
+                    splitLine(line, 0);
+                }
+                if (line_counter > pagination * 2) {
+                    splitLine(line, 1);
+                }
+            }
+            line_counter++;
         }
-        if (line_counter == pos - (pagination * 3) - 1 && !range_found) {
-            line_counter = 1;
-            range_found = true;
-        }
-        if (range_found) {
+    }
+    else {
+        while (file.good()) {
+            string line;
+            getline(file, line, '\n');
+            string id;
+
+            stringstream check1(line);
+            getline(check1, id, ',');
+
+            if (line_counter == pos - 1) {
+                break;
+            }
             if (line_counter < pagination + 1) {
                 splitLine(line, 2);
             }
@@ -122,8 +141,8 @@ void Reader::readUp(string first_id) {
             if (line_counter > pagination * 2) {
                 splitLine(line, 1);
             }
+            line_counter++;
         }
-        line_counter++;
     }
 }
 

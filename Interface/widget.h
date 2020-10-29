@@ -26,7 +26,7 @@ private:
     Reader* reader;
     QSlider* slider;
     QScrollBar* scroll_bar;
-    bool just_changed;
+    bool just_changed = false;
 
 private slots:
     void on_playB_clicked();
