@@ -3,7 +3,7 @@ project(OdysseyRadio)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_PREFIX_PATH "/home/dani")
+set(CMAKE_PREFIX_PATH "/home/oscarmg310")
 
 find_package(Qt5 COMPONENTS Core Widgets Gui Multimedia REQUIRED)
 
