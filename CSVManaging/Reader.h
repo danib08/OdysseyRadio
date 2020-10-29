@@ -8,7 +8,6 @@
 #include <iostream>
 #include <Lists/LinkedList.h>
 
-
 class Reader {
 private:
     int pagination;
@@ -19,8 +18,10 @@ private:
 
 public:
     Reader();
-    void read(string last_id);
+    void readDown(string last_id);
+    void readUp(string first_id);
     void firstRead();
+    int getPosition(string id);
     std::string getNowPage();
     std::string getAfterPage();
     std::string getBeforePage();
