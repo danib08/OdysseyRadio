@@ -31,6 +31,7 @@ Widget::Widget(QWidget *parent)
 
     ui->openB->setFixedSize(115, 25);
     ui->openB->setText("Don't Paginate");
+    connect(ui->openB, SIGNAL(released()), this, SLOT(onPaginateClick()));
 
     slider = new QSlider(this);
     slider->setOrientation(Qt::Horizontal);
@@ -41,38 +42,6 @@ Widget::Widget(QWidget *parent)
 
     scroll_bar = ui->songsLIst->verticalScrollBar();
     connect(scroll_bar, SIGNAL(valueChanged(int)), this, SLOT(detectScroll()));
-}
-
-void Widget::on_playB_clicked()
-{
-    mMediaPlayer->play();
-}
-
-void Widget::on_pauseB_clicked()
-{
-    mMediaPlayer->pause();
-}
-
-void Widget::on_stopB_clicked()
-{
-    mMediaPlayer->stop();
-}
-
-void Widget::on_muteB_clicked()
-{
-    if (ui->muteB->text()=="MUTE"){
-       mMediaPlayer->setMuted(true);
-       ui->muteB->setText("UNMUTE");
-    }else{
-        mMediaPlayer->setMuted(false);
-        ui->muteB->setText("MUTE");
-    }
-
-}
-
-void Widget::on_volumeBar_valueChanged(int value)
-{
-    mMediaPlayer->setVolume(value);
 }
 
 void Widget::playSong() {
@@ -161,59 +130,83 @@ void Widget::showSongs(string song_list) {
         double vm, rss;
         setMemoryValue(vm,rss);
     }
-
 }
 
 void Widget::detectScroll() {
-    if (scroll_bar->value() > scroll_bar->minimum() && scroll_bar->value() < scroll_bar->maximum()) {
-        just_changed = false;
+    if (pagination) {
+        if (scroll_bar->value() > scroll_bar->minimum() && scroll_bar->value() < scroll_bar->maximum()) {
+            just_changed = false;
+        }
+        if (scroll_bar->value() == scroll_bar->maximum() && !just_changed) {
+            int count = ui->songsLIst->count();
+            string item_text;
+            QListWidgetItem* item;
+            bool search = false;
+
+            if (count == 40 || count == 61 || count == 63 || count == 64 || count == 69 || count == 75 || count == 67 || count == 60) {
+                item = ui->songsLIst->item(count - 1);
+                search = true;
+            }
+            if (count == 62) {
+                item = ui->songsLIst->item(count - 2);
+                search = true;
+            }
+
+            if (search) {
+                item_text = item->text().toStdString();
+
+                stringstream check1(item_text);
+                string id;
+                getline(check1, id, ' ');
+
+                reader->readDown(id);
+                just_changed = true;
+                ui->songsLIst->clear();
+                showSongs(reader->getBeforePage());
+                showSongs(reader->getNowPage());
+                showSongs(reader->getAfterPage());
+                ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
+            }
+        }
+        if (scroll_bar->value() == scroll_bar->minimum() && !just_changed) {
+            string first_text = ui->songsLIst->item(0)->text().toStdString();
+            stringstream check1(first_text);
+            string first_id;
+            getline(check1, first_id, ' ');
+
+            if (first_id != "2") {
+                reader->readUp(first_id);
+                just_changed = true;
+                ui->songsLIst->clear();
+                showSongs(reader->getBeforePage());
+                showSongs(reader->getNowPage());
+                showSongs(reader->getAfterPage());
+                ui->songsLIst->scrollToItem(ui->songsLIst->item(ui->songsLIst->count() - 1));
+            }
+        }
     }
-    if (scroll_bar->value() == scroll_bar->maximum() && !just_changed) {
-        int count = ui->songsLIst->count();
-        string item_text;
-        QListWidgetItem* item;
-        bool search = false;
+}
 
-        if (count == 40 || count == 61 || count == 63 || count == 64 || count == 69 || count == 75 || count == 67 || count == 60) {
-            item = ui->songsLIst->item(count - 1);
-            search = true;
-        }
-        if (count == 62) {
-            item = ui->songsLIst->item(count - 2);
-            search = true;
-        }
-
-        if (search) {
-            item_text = item->text().toStdString();
-
-            stringstream check1(item_text);
-            string id;
-            getline(check1, id, ' ');
-
-            reader->readDown(id);
-            just_changed = true;
-            ui->songsLIst->clear();
-            showSongs(reader->getBeforePage());
-            showSongs(reader->getNowPage());
-            showSongs(reader->getAfterPage());
-            ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
-        }
+void Widget::onPaginateClick() {
+    if (pagination) {
+        mMediaPlayer->stop();
+        ui->openB->setText("Paginate");
+        pagination = false;
+        reader->readAll();
+        ui->songsLIst->clear();
+        showSongs(reader->getAllSongs());
+        ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
     }
-    if (scroll_bar->value() == scroll_bar->minimum() && !just_changed) {
-        string first_text = ui->songsLIst->item(0)->text().toStdString();
-        stringstream check1(first_text);
-        string first_id;
-        getline(check1, first_id, ' ');
-
-        if (first_id != "2") {
-            reader->readUp(first_id);
-            just_changed = true;
-            ui->songsLIst->clear();
-            showSongs(reader->getBeforePage());
-            showSongs(reader->getNowPage());
-            showSongs(reader->getAfterPage());
-            ui->songsLIst->scrollToItem(ui->songsLIst->item(ui->songsLIst->count() - 1));
-        }
+    else {
+        mMediaPlayer->stop();
+        ui->openB->setText("Don't Paginate");
+        pagination = true;
+        reader->firstRead();
+        just_changed = true;
+        ui->songsLIst->clear();
+        showSongs(reader->getNowPage());
+        showSongs(reader->getAfterPage());
+        ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
     }
 }
 
@@ -240,7 +233,38 @@ void Widget::setMemoryValue(double& vm_usage, double& resident_set) {
     ui->memoryBar->setValue(memVal);
 }
 
-Widget::~Widget()
+void Widget::on_playB_clicked()
 {
+    mMediaPlayer->play();
+}
+
+void Widget::on_pauseB_clicked()
+{
+    mMediaPlayer->pause();
+}
+
+void Widget::on_stopB_clicked()
+{
+    mMediaPlayer->stop();
+}
+
+void Widget::on_muteB_clicked()
+{
+    if (ui->muteB->text()=="MUTE"){
+        mMediaPlayer->setMuted(true);
+        ui->muteB->setText("UNMUTE");
+    }else{
+        mMediaPlayer->setMuted(false);
+        ui->muteB->setText("MUTE");
+    }
+}
+
+void Widget::on_volumeBar_valueChanged(int value)
+{
+    mMediaPlayer->setVolume(value);
+}
+
+
+Widget::~Widget() {
     delete ui;
 }

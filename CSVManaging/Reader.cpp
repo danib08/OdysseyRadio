@@ -13,9 +13,15 @@ Reader::Reader() : pagination(20) {
     page_now = new LinkedList();
     page_before = new LinkedList();
     page_after = new LinkedList();
+    all_songs = new LinkedList();
 }
 
 void Reader::firstRead() {
+    all_songs->clear();
+    page_now->clear();
+    page_before->clear();
+    page_after->clear();
+
     ifstream file;
     file.open("../Metadata/" + file_name);
     int line_counter = 1;
@@ -34,12 +40,12 @@ void Reader::firstRead() {
         else {
             splitLine(line, 1);
         }
-
         line_counter++;
     }
 }
 
 void Reader::readDown(string last_id) {
+    all_songs->clear();
     page_now->clear();
     page_before->clear();
     page_after->clear();
@@ -80,6 +86,7 @@ void Reader::readDown(string last_id) {
 }
 
 void Reader::readUp(string first_id) {
+    all_songs->clear();
     page_now->clear();
     page_before->clear();
     page_after->clear();
@@ -146,6 +153,28 @@ void Reader::readUp(string first_id) {
     }
 }
 
+void Reader::readAll() {
+    all_songs->clear();
+    page_now->clear();
+    page_before->clear();
+    page_after->clear();
+
+    ifstream file;
+    file.open("../Metadata/" + file_name);
+
+    while (file.good()) {
+        string line;
+        getline(file, line, '\n');
+        string id;
+
+        stringstream check1(line);
+        getline(check1, id, ',');
+
+        splitLine(line, 4);
+    }
+}
+
+
 void Reader::splitLine(string line, int flag) {
     string one;
     string two;
@@ -179,6 +208,12 @@ void Reader::splitLine(string line, int flag) {
             break;
         case 2:
             page_before->append(one, two, three);
+            break;
+        case 3:
+            // artists
+            break;
+        default:
+            all_songs->append(one, two, three);
             break;
     }
 }
@@ -214,3 +249,8 @@ std::string Reader::getAfterPage() {
 std::string Reader::getBeforePage() {
     return page_before->get();
 }
+
+std::string Reader::getAllSongs() {
+    return all_songs->get();
+}
+

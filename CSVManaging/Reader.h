@@ -15,17 +15,20 @@ private:
     LinkedList* page_now;
     LinkedList* page_before;
     LinkedList* page_after;
+    LinkedList* all_songs;
 
 public:
     Reader();
     void readDown(string last_id);
     void readUp(string first_id);
+    void readAll();
     void firstRead();
     int getPosition(string id);
+    void splitLine(std::string line, int flag);
     std::string getNowPage();
     std::string getAfterPage();
     std::string getBeforePage();
-    void splitLine(std::string line, int flag);
+    std::string getAllSongs();
 };
 
 
