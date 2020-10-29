@@ -26,8 +26,7 @@ private:
     Reader* reader;
     QSlider* slider;
     QScrollBar* scroll_bar;
-
-    void on_artistList_doubleClicked(const QModelIndex &index);
+    bool just_changed;
 
 private slots:
     void on_playB_clicked();

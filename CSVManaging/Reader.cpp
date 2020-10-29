@@ -15,7 +15,31 @@ Reader::Reader() : pagination(20) {
     page_after = new LinkedList();
 }
 
-void Reader::read(string last_id) {
+void Reader::firstRead() {
+    ifstream file;
+    file.open("../Metadata/" + file_name);
+    int line_counter = 1;
+
+    while (file.good()) {
+        if (line_counter == (2 * pagination) + 1) {
+            break;
+        }
+
+        string line;
+        getline(file, line, '\n');
+
+        if (line_counter < pagination + 1) {
+            splitLine(line, 0);
+        }
+        else {
+            splitLine(line, 1);
+        }
+
+        line_counter++;
+    }
+}
+
+void Reader::readDown(string last_id) {
     page_now->clear();
     page_before->clear();
     page_after->clear();
@@ -55,26 +79,50 @@ void Reader::read(string last_id) {
     }
 }
 
-void Reader::firstRead() {
+void Reader::readUp(string first_id) {
+    page_now->clear();
+    page_before->clear();
+    page_after->clear();
+
+    string string1 = page_before->get();
+    string string2 = page_now->get();
+    string string3 = page_after->get();
+
     ifstream file;
     file.open("../Metadata/" + file_name);
+    int pos = getPosition(first_id);
     int line_counter = 1;
+    bool range_found = false;
 
     while (file.good()) {
-        if (line_counter == (2 * pagination) + 1) {
-            break;
-        }
-
         string line;
         getline(file, line, '\n');
+        string id;
 
-        if (line_counter < pagination + 1) {
-            splitLine(line, 0);
-        }
-        else {
-            splitLine(line, 1);
-        }
+        stringstream check1(line);
+        getline(check1, id, ',');
 
+        if (line_counter == 61 && range_found) {
+            string string1 = page_before->get();
+            string string2 = page_now->get();
+            string string3 = page_after->get();
+            break;
+        }
+        if (line_counter == pos - (pagination * 3) - 1 && !range_found) {
+            line_counter = 1;
+            range_found = true;
+        }
+        if (range_found) {
+            if (line_counter < pagination + 1) {
+                splitLine(line, 2);
+            }
+            if (line_counter >= pagination + 1 && line_counter <= 2 * pagination) {
+                splitLine(line, 0);
+            }
+            if (line_counter > pagination * 2) {
+                splitLine(line, 1);
+            }
+        }
         line_counter++;
     }
 }
@@ -114,6 +162,26 @@ void Reader::splitLine(string line, int flag) {
             page_before->append(one, two, three);
             break;
     }
+}
+
+int Reader::getPosition(string first_id) {
+    ifstream file;
+    file.open("../Metadata/" + file_name);
+    int pos = 1;
+
+    while (file.good()) {
+        string line;
+        getline(file, line, '\n');
+        string id;
+
+        stringstream check1(line);
+        getline(check1, id, ',');
+        if (id == first_id) {
+            break;
+        }
+        pos++;
+    }
+    return pos;
 }
 
 std::string Reader::getNowPage() {

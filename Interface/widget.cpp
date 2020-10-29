@@ -70,11 +70,6 @@ void Widget::on_volumeBar_valueChanged(int value)
     mMediaPlayer->setVolume(value);
 }
 
-void Widget::on_artistList_doubleClicked(const QModelIndex &index)
-{
-
-}
-
 void Widget::playSong() {
     string path = "/home/dani/Documents/fma_small/";
   
@@ -162,7 +157,7 @@ void Widget::showSongs(string song_list) {
 }
 
 void Widget::detectScroll() {
-    if (scroll_bar->value() == scroll_bar->maximum()) {
+    if (scroll_bar->value() == scroll_bar->maximum() && !just_changed) {
         int count = ui->songsLIst->count();
         string item_text;
         QListWidgetItem* item;
@@ -184,13 +179,32 @@ void Widget::detectScroll() {
             string id;
             getline(check1, id, ' ');
 
-            reader->read(id);
+            reader->readDown(id);
             ui->songsLIst->clear();
             showSongs(reader->getBeforePage());
             showSongs(reader->getNowPage());
             showSongs(reader->getAfterPage());
+            just_changed = true;
             ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
         }
+    }
+    if (scroll_bar->value() == scroll_bar->minimum() && !just_changed) {
+        string first_text = ui->songsLIst->item(0)->text().toStdString();
+        stringstream check1(first_text);
+        string first_id;
+        getline(check1, first_id, ' ');
+
+        if (first_id != "2") {
+            reader->readUp(first_id);
+            ui->songsLIst->clear();
+            showSongs(reader->getBeforePage());
+            showSongs(reader->getNowPage());
+            showSongs(reader->getAfterPage());
+            just_changed = true;
+        }
+    }
+    if (scroll_bar->value() > scroll_bar->minimum() && scroll_bar->value() < scroll_bar->maximum()) {
+        just_changed = false;
     }
 }
 
