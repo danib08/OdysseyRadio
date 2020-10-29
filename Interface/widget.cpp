@@ -29,6 +29,9 @@ Widget::Widget(QWidget *parent)
 
     connect(ui->songsLIst, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(playSong()));
 
+    ui->openB->setFixedSize(115, 25);
+    ui->openB->setText("Don't Paginate");
+
     slider = new QSlider(this);
     slider->setOrientation(Qt::Horizontal);
     ui->verticalLayout->addWidget(slider);
