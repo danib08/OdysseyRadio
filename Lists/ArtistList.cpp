@@ -20,11 +20,6 @@ void ArtistList::append(string data) {
     length++;
 }
 
-void ArtistList::clear() {
-    head = tail = nullptr;
-    length = 0;
-}
-
 std::string ArtistList::get() {
     ArtistNode* node = head;
     string output;
@@ -36,4 +31,22 @@ std::string ArtistList::get() {
         node = node->getNext();
     }
     return output;
+}
+
+bool ArtistList::exists(string name) {
+    if (length == 0) {
+        return false;
+    }
+    else {
+        ArtistNode* node = head;
+        bool result = false;
+        for (int j = 0; j < length; ++j) {
+            if (node->getData() == name) {
+                result = true;
+                break;
+            }
+            node = node->getNext();
+        }
+        return result;
+    }
 }

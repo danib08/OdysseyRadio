@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <Lists/SongList.h>
+#include <Lists/ArtistList.h>
 
 class Reader {
 private:
@@ -16,7 +17,7 @@ private:
     SongList* page_before;
     SongList* page_after;
     SongList* all_songs;
-    SongList* artists;
+    ArtistList* artist_list;
 
 public:
     Reader();
@@ -31,6 +32,7 @@ public:
     std::string getAfterPage();
     std::string getBeforePage();
     std::string getAllSongs();
+    std::string getArtists();
 };
 
 

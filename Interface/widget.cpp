@@ -15,10 +15,14 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
     mMediaPlayer = new QMediaPlayer(this);
+
     reader = new Reader();
     reader->firstRead();
+    reader->readArtists();
+
     showSongs(reader->getNowPage());
     showSongs(reader->getAfterPage());
+    showArtists(reader->getArtists());
 
     connect(mMediaPlayer,&QMediaPlayer::positionChanged,[&](qint64 position){
         ui->progress->setValue(position);
@@ -28,6 +32,8 @@ Widget::Widget(QWidget *parent)
     });
 
     connect(ui->songsLIst, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(playSong()));
+    connect(ui->artistList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(showArtistSong()));
+
 
     ui->openB->setFixedSize(115, 25);
     ui->openB->setText("Don't Paginate");
@@ -127,6 +133,18 @@ void Widget::showSongs(string song_list) {
     while(getline(check1, intermediate, '$')) {
         QString qstr = QString::fromStdString(intermediate);
         ui->songsLIst->addItem(qstr);
+        double vm, rss;
+        setMemoryValue(vm,rss);
+    }
+}
+
+void Widget::showArtists(string artist_list) {
+    stringstream check1(artist_list);
+    string intermediate;
+
+    while(getline(check1, intermediate, '$')) {
+        QString qstr = QString::fromStdString(intermediate);
+        ui->artistList->addItem(qstr);
         double vm, rss;
         setMemoryValue(vm,rss);
     }
@@ -257,7 +275,6 @@ void Widget::on_volumeBar_valueChanged(int value)
 {
     mMediaPlayer->setVolume(value);
 }
-
 
 Widget::~Widget() {
     delete ui;

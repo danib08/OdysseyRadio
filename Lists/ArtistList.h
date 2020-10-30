@@ -20,9 +20,9 @@ public:
 
     void append(string data);
 
-    void clear();
-
     std::string get();
+
+    bool exists(string name);
 };
 
 
