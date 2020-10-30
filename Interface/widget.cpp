@@ -139,35 +139,28 @@ void Widget::detectScroll() {
         }
         if (scroll_bar->value() == scroll_bar->maximum() && !just_changed) {
             int count = ui->songsLIst->count();
-            cout << count << "\n";
             string item_text;
             QListWidgetItem* item;
-            bool search = false;
-            
+
             if (count == 62) {
                 item = ui->songsLIst->item(count - 2);
-                search = true;
             }
             else {
                 item = ui->songsLIst->item(count - 1);
-                search = true;
             }
+            item_text = item->text().toStdString();
 
-            if (search) {
-                item_text = item->text().toStdString();
+            stringstream check1(item_text);
+            string id;
+            getline(check1, id, ' ');
 
-                stringstream check1(item_text);
-                string id;
-                getline(check1, id, ' ');
-
-                reader->readDown(id);
-                just_changed = true;
-                ui->songsLIst->clear();
-                showSongs(reader->getBeforePage());
-                showSongs(reader->getNowPage());
-                showSongs(reader->getAfterPage());
-                ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
-            }
+            reader->readDown(id);
+            just_changed = true;
+            ui->songsLIst->clear();
+            showSongs(reader->getBeforePage());
+            showSongs(reader->getNowPage());
+            showSongs(reader->getAfterPage());
+            ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
         }
         if (scroll_bar->value() == scroll_bar->minimum() && !just_changed) {
             string first_text = ui->songsLIst->item(0)->text().toStdString();

@@ -15,7 +15,7 @@ class SongNode; // This forward declaration is used because without it, the prog
 /**
  * @brief A class that represents a singly linked list.
  */
-class LinkedList {
+class SongList {
 private:
     int length = 0;
     SongNode* head;
@@ -23,10 +23,10 @@ private:
 
 public:
     /**
-     * @brief Constructor for the LinkedList class.
+     * @brief Constructor for the SongList class.
      * It sets the values of "head" and "tail" to nullptr.
      */
-    LinkedList();
+    SongList();
 
     /**
      * @brief Adds a new node at the back of the linked list with the value entered as a parameter.

@@ -10,10 +10,10 @@
 using namespace std;
 
 Reader::Reader() : pagination(20) {
-    page_now = new LinkedList();
-    page_before = new LinkedList();
-    page_after = new LinkedList();
-    all_songs = new LinkedList();
+    page_now = new SongList();
+    page_before = new SongList();
+    page_after = new SongList();
+    all_songs = new SongList();
 }
 
 void Reader::firstRead() {

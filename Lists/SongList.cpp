@@ -2,14 +2,14 @@
 // Created by dani on 24/10/20.
 //
 
-#include "LinkedList.h"
+#include "SongList.h"
 #include <string>
 using namespace std;
 
-LinkedList::LinkedList()
+SongList::SongList()
         : head(nullptr), tail(nullptr) {}
 
-void LinkedList::append(string one, string two, string three) {
+void SongList::append(string one, string two, string three) {
     SongNode* node = new SongNode();
     node->setArray(one, two, three);
 
@@ -24,12 +24,12 @@ void LinkedList::append(string one, string two, string three) {
     length++;
 }
 
-void LinkedList::clear() {
+void SongList::clear() {
     head = tail = nullptr;
     length = 0;
 }
 
-string LinkedList::get() {
+string SongList::get() {
     SongNode* node = head;
     string output;
     for (int j = 0; j < length; ++j) {

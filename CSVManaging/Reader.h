@@ -6,17 +6,17 @@
 #define ODYSSEYRADIO_READER_H
 
 #include <iostream>
-#include <Lists/LinkedList.h>
+#include <Lists/SongList.h>
 
 class Reader {
 private:
     int pagination;
     std::string file_name = "raw_tracks-edited.csv";
-    LinkedList* page_now;
-    LinkedList* page_before;
-    LinkedList* page_after;
-    LinkedList* all_songs;
-    LinkedList* artists;
+    SongList* page_now;
+    SongList* page_before;
+    SongList* page_after;
+    SongList* all_songs;
+    SongList* artists;
 
 public:
     Reader();
