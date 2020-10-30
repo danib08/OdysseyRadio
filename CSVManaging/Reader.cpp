@@ -15,6 +15,7 @@ Reader::Reader() : pagination(20) {
     page_after = new SongList();
     all_songs = new SongList();
     artist_list = new ArtistList();
+    artist_songs = new SongList();
 }
 
 void Reader::firstRead() {
@@ -211,7 +212,7 @@ void Reader::splitLine(string line, int flag) {
             page_before->append(one, two, three);
             break;
         case 3:
-            // artist_list
+            artist_songs->append(one, two, three);
             break;
         default:
             all_songs->append(one, two, three);
@@ -258,6 +259,27 @@ void Reader::readArtists() {
     }
 }
 
+void Reader::readArtSongs(string name) {
+    artist_songs->clear();
+    ifstream file;
+    file.open("../Metadata/" + file_name);
+
+    while (file.good()) {
+        string line;
+        getline(file, line, '\n');
+        string artist;
+
+        stringstream check1(line);
+        getline(check1, artist, ',');
+        getline(check1, artist, ',');
+
+        if (artist == name) {
+            splitLine(line, 3);
+        }
+    }
+}
+
+
 std::string Reader::getNowPage() {
     return page_now->get();
 }
@@ -276,4 +298,8 @@ std::string Reader::getAllSongs() {
 
 std::string Reader::getArtists() {
     return artist_list->get();
+}
+
+string Reader::getArtSongs() {
+    return artist_songs->get();
 }

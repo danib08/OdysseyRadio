@@ -12,11 +12,12 @@
 class Reader {
 private:
     int pagination;
-    std::string file_name = "raw_tracks-edited.csv";
+    string file_name = "raw_tracks-edited.csv";
     SongList* page_now;
     SongList* page_before;
     SongList* page_after;
     SongList* all_songs;
+    SongList* artist_songs;
     ArtistList* artist_list;
 
 public:
@@ -26,13 +27,15 @@ public:
     void readAll();
     void firstRead();
     int getPosition(string id);
-    void splitLine(std::string line, int flag);
+    void splitLine(string line, int flag);
     void readArtists();
-    std::string getNowPage();
-    std::string getAfterPage();
-    std::string getBeforePage();
-    std::string getAllSongs();
-    std::string getArtists();
+    void readArtSongs(string name);
+    string getNowPage();
+    string getAfterPage();
+    string getBeforePage();
+    string getAllSongs();
+    string getArtists();
+    string getArtSongs();
 };
 
 

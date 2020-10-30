@@ -34,7 +34,6 @@ Widget::Widget(QWidget *parent)
     connect(ui->songsLIst, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(playSong()));
     connect(ui->artistList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(showArtistSong()));
 
-
     ui->openB->setFixedSize(115, 25);
     ui->openB->setText("Don't Paginate");
     connect(ui->openB, SIGNAL(released()), this, SLOT(onPaginateClick()));
@@ -220,6 +219,21 @@ void Widget::onPaginateClick() {
         showSongs(reader->getAfterPage());
         ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
     }
+}
+
+void Widget::showArtistSong() {
+    QString qtext = ui->artistList->selectedItems()[0]->text();
+    string text = qtext.toStdString();
+
+    mMediaPlayer->stop();
+    ui->openB->setText("Paginate");
+    pagination = false;
+    reader->readArtSongs(text);
+    just_changed = true;
+    ui->songsLIst->clear();
+    showSongs(reader->getArtSongs());
+    ui->songsLIst->scrollToItem(ui->songsLIst->item(0));
+
 }
 
 void Widget::setMemoryValue(double& vm_usage, double& resident_set) {

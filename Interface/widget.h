@@ -47,6 +47,8 @@ private slots:
 
     void playSong();
 
+    void showArtistSong();
+
     void detectScroll();
 
 };
