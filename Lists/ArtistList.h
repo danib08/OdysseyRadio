@@ -9,6 +9,11 @@
 #include <string>
 using namespace std;
 
+/**
+ * @brief ArtistList class: stock the artist data
+ * @author Daniela Brenes
+ * @author Oscar Mendez
+ */
 class ArtistList {
 private:
     int length = 0;
@@ -16,12 +21,25 @@ private:
     ArtistNode* tail;
 
 public:
+    /**
+     * @brief Constructor method
+     */
     ArtistList();
-
+    /**
+     * @brief  append method that add data into the list
+     * @param data string
+     */
     void append(string data);
-
+    /**
+     * @brief get method tht returns a string data
+     * @return string
+     */
     std::string get();
-
+    /**
+     * @brief exists method that check if any data already exists in the list
+     * @param name string
+     * @return boolean
+     */
     bool exists(string name);
 };
 
