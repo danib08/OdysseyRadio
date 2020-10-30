@@ -5,28 +5,28 @@
 #ifndef PRUEBAQT_LINKEDLIST_H
 #define PRUEBAQT_LINKEDLIST_H
 
-#include "Node.h"
+#include "SongNode.h"
 #include <string>
 using namespace std;
 
-class Node; // This forward declaration is used because without it, the program doesn't compile. This way, the
-// the compiler knows about the class Node before it's declaration as a pointer below.
+class SongNode; // This forward declaration is used because without it, the program doesn't compile. This way, the
+// the compiler knows about the class SongNode before it's declaration as a pointer below.
 
 /**
  * @brief A class that represents a singly linked list.
  */
-class LinkedList {
+class SongList {
 private:
     int length = 0;
-    Node* head;
-    Node* tail;
+    SongNode* head;
+    SongNode* tail;
 
 public:
     /**
-     * @brief Constructor for the LinkedList class.
+     * @brief Constructor for the SongList class.
      * It sets the values of "head" and "tail" to nullptr.
      */
-    LinkedList();
+    SongList();
 
     /**
      * @brief Adds a new node at the back of the linked list with the value entered as a parameter.

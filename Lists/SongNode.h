@@ -11,26 +11,26 @@ using namespace std;
 /**
 * @brief A class that represents a node used in linked lists.
 */
-class Node {
+class SongNode {
 private:
     std::string data[3];
-    Node* next;
+    SongNode* next;
 
 public:
     /**
-     * @brief Constructor for the Node class.
+     * @brief Constructor for the SongNode class.
      * It sets "next" to nullptr.
      */
-    Node();
+    SongNode();
 
 
     /**
      * @brief Setter for the "next" pointer type attribute.
      * @param new_next The new value that'll be assigned to the "next" attribute.
      */
-    void setNext(Node* new_next);
+    void setNext(SongNode* new_next);
 
-    Node* getNext();
+    SongNode* getNext();
 
     void setArray(string one, string two, string three);
 
