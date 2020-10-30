@@ -139,16 +139,17 @@ void Widget::detectScroll() {
         }
         if (scroll_bar->value() == scroll_bar->maximum() && !just_changed) {
             int count = ui->songsLIst->count();
+            cout << count << "\n";
             string item_text;
             QListWidgetItem* item;
             bool search = false;
-
-            if (count == 40 || count == 61 || count == 63 || count == 64 || count == 69 || count == 75 || count == 67 || count == 60) {
-                item = ui->songsLIst->item(count - 1);
-                search = true;
-            }
+            
             if (count == 62) {
                 item = ui->songsLIst->item(count - 2);
+                search = true;
+            }
+            else {
+                item = ui->songsLIst->item(count - 1);
                 search = true;
             }
 

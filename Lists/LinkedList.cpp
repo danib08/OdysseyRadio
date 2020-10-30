@@ -10,7 +10,7 @@ LinkedList::LinkedList()
         : head(nullptr), tail(nullptr) {}
 
 void LinkedList::append(string one, string two, string three) {
-    Node* node = new Node();
+    SongNode* node = new SongNode();
     node->setArray(one, two, three);
 
     if (length == 0) {
@@ -30,7 +30,7 @@ void LinkedList::clear() {
 }
 
 string LinkedList::get() {
-    Node* node = head;
+    SongNode* node = head;
     string output;
     for (int j = 0; j < length; ++j) {
         output += node->getIndexArray(0) + " - " + node->getIndexArray(1) + " - " + node->getIndexArray(2);
