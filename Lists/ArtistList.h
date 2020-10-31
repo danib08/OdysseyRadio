@@ -27,18 +27,18 @@ public:
     ArtistList();
     /**
      * @brief  append method that add data into the list
-     * @param data string
+     * @param data add the artist data into the list
      */
     void append(string data);
     /**
      * @brief get method tht returns a string data
-     * @return string
+     * @return the data that are stocked in the list
      */
     std::string get();
     /**
      * @brief exists method that check if any data already exists in the list
-     * @param name string
-     * @return boolean
+     * @param name that will be compared
+     * @return boolean if any data are already in the list
      */
     bool exists(string name);
 };
