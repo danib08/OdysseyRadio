@@ -40,15 +40,14 @@ private:
     QScrollBar* scroll_bar;
     bool just_changed = false;
     bool pagination = true;
-
     /**
     * @brief showSongs method that show the songs in the listview
-    * @param song_list string
+    * @param song_list string that has the data that will be shown in the song list widget
     */
     void showSongs(string song_list);
     /**
      * @brief showArtist method that show the artist int the listview
-     * @param artist_list string
+     * @param artist_list string that has the data that will be shown in the artist list widget
      */
     void showArtists(string artist_list);
     /**
@@ -77,6 +76,7 @@ private slots:
     void on_muteB_clicked();
     /**
      * @brief on_volumeBar_valueChanged method that take the value of the volume bar slider
+     * @param int value that has the value of the volume slider
      */
     void on_volumeBar_valueChanged(int value);
     /**
