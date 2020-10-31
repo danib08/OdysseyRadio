@@ -19,22 +19,22 @@ private:
 public:
     /**
      * @brief stock the data of the artist
-     * @param new_data string
+     * @param new_data the data tha will be stocked
      */
     explicit ArtistNode(string new_data);
     /**
      * @brief stock the next node reference
-     * @param new_next ArtistNode
+     * @param new_next reference to the next node
      */
     void setNext(ArtistNode* new_next);
     /**
      * @brief return the next node
-     * @return ArtistNode
+     * @return the next to current node
      */
     ArtistNode* getNext();
     /**
      * @brief return the data that are stocked in the node
-     * @return string
+     * @return the data stocked in the node
      */
     string getData();
 };
