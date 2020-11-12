@@ -7,12 +7,14 @@
 #include "CSVManaging/Reader.h"
 #include <iostream>
 #include <unistd.h>
+#include <sys/resource.h>
 using namespace std;
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
+
     ui->setupUi(this);
     mMediaPlayer = new QMediaPlayer(this);
 
@@ -47,6 +49,8 @@ Widget::Widget(QWidget *parent)
 
     scroll_bar = ui->songsLIst->verticalScrollBar();
     connect(scroll_bar, SIGNAL(valueChanged(int)), this, SLOT(detectScroll()));
+
+    memoryLabel = new QLabel("Memory:", this);
 }
 
 void Widget::playSong() {
@@ -132,8 +136,6 @@ void Widget::showSongs(string song_list) {
     while(getline(check1, intermediate, '$')) {
         QString qstr = QString::fromStdString(intermediate);
         ui->songsLIst->addItem(qstr);
-        double vm, rss;
-        setMemoryValue(vm,rss);
     }
 }
 
@@ -144,12 +146,11 @@ void Widget::showArtists(string artist_list) {
     while(getline(check1, intermediate, '$')) {
         QString qstr = QString::fromStdString(intermediate);
         ui->artistList->addItem(qstr);
-        double vm, rss;
-        setMemoryValue(vm,rss);
     }
 }
 
 void Widget::detectScroll() {
+    setMemoryValue();
     if (pagination) {
         if (scroll_bar->value() > scroll_bar->minimum() && scroll_bar->value() < scroll_bar->maximum()) {
             just_changed = false;
@@ -236,26 +237,13 @@ void Widget::showArtistSong() {
 
 }
 
-void Widget::setMemoryValue(double& vm_usage, double& resident_set) {
-    vm_usage = 0.0;
-    resident_set = 0.0;
+void Widget::setMemoryValue() {
+    struct rusage usoMem;
+    int ret = getrusage(RUSAGE_SELF,&usoMem);
+    int memVal = (usoMem.ru_maxrss*100)/8000000;
 
-    // the two fields we want
-    unsigned long vsize;
-    long rss;
-    {
-        std::string ignore;
-        std::ifstream ifs("/proc/self/stat", std::ios_base::in);
-        ifs >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore
-            >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore
-            >> ignore >> ignore >> vsize >> rss;
-    }
-
-    long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
-    vm_usage = vsize / 1024.0;
-    resident_set = rss * page_size_kb;
-
-    int memVal = (resident_set/8000000) * 100;
+    string memory = to_string(usoMem.ru_maxrss);
+    memoryLabel->setText(QString::fromStdString(memory) + QString::fromStdString(" kb"));
     ui->memoryBar->setValue(memVal);
 }
 

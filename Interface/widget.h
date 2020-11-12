@@ -37,6 +37,7 @@ private:
     QMediaPlayer *mMediaPlayer;
     Reader* reader;
     QSlider* slider;
+    QLabel* memoryLabel;
     QScrollBar* scroll_bar;
     bool just_changed = false;
     bool pagination = true;
@@ -52,10 +53,8 @@ private:
     void showArtists(string artist_list);
     /**
      * @brief setMemoryValue method that calculate the memory usage
-     * @param vm_usage double
-     * @param resident_set double
      */
-    void setMemoryValue(double& vm_usage, double& resident_set);
+    void setMemoryValue();
 
 private slots:
     /**
